@@ -1,0 +1,36 @@
+package com.jerryyin.quickweather.model;
+
+/**
+ * Created by JerryYin on 8/17/15.
+ * 省份数据
+ */
+public class Province {
+
+    private int id;
+    private String provinceName;
+    private String provinceCode;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode;
+    }
+}
