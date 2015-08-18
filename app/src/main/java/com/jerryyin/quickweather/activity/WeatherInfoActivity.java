@@ -1,6 +1,7 @@
 package com.jerryyin.quickweather.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -19,7 +20,7 @@ import com.jerryyin.quickweather.util.Utility;
 /**
  * Created by JerryYin on 8/18/15.
  */
-public class WeatherInfoActivity extends Activity {
+public class WeatherInfoActivity extends Activity implements View.OnClickListener {
 
     /**Constants*/
 
@@ -58,6 +59,10 @@ public class WeatherInfoActivity extends Activity {
         mtvTemp1 = (TextView) findViewById(R.id.tv_temp1);
         mtvTemp2 = (TextView) findViewById(R.id.tv_temp2);
         mWeaLaoyout = (RelativeLayout) findViewById(R.id.weather_layout);
+        mbtnChangeCity = (Button) findViewById(R.id.btn_home_page);
+        mbtnRefreshWer = (Button) findViewById(R.id.btn_refresh);
+        mbtnRefreshWer.setOnClickListener(this);
+        mbtnChangeCity.setOnClickListener(this);
     }
 
     public void initData() {
@@ -151,6 +156,28 @@ public class WeatherInfoActivity extends Activity {
         mWeaLaoyout.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_home_page:
+                Intent intent = new Intent(this, ChooseAreaActivity.class);
+                intent.putExtra("from_weather_activity", true);
+                startActivity(intent);
+                finish();
+                break;
+
+            case R.id.btn_refresh:
+                mtvPublish.setText("正在刷新...");
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                String weatherCode = preferences.getString("weather_code",  "");
+                if (!TextUtils.isEmpty(weatherCode)){
+                    queryWeatherInfo(weatherCode);
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 

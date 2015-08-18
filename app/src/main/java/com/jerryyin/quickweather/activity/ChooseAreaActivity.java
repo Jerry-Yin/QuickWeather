@@ -73,6 +73,10 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
      */
     private int mCurrentLevel;
 
+    /**
+     *  是否从WeatherInfoActivity 跳转过来（按钮）
+     */
+    private boolean isFromWeatherInfoActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,16 +264,22 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
         } else if (mCurrentLevel == LEVEL_CITY) {
             queryProvinces();
         } else {
+            if (isFromWeatherInfoActivity){
+                Intent intent = new Intent(this, WeatherInfoActivity.class);
+                startActivity(intent);
+            }
             finish();
         }
     }
 
     /**
-     * 判断当前是否已经选定过城市，如果选定过就直接跳转道城市天气界面
+     * 1.判断当前是否已经选定过城市，如果选定过就直接跳转道城市天气界面
+     * 2.已经选择了城市且不是从WeatherActivity跳转过来,才会直接跳转到 WeatherActivity
      */
     public void judegSelOrNo() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences.getBoolean("city_selected", false)) {
+        isFromWeatherInfoActivity = getIntent().getBooleanExtra("from_weather_activity", false);
+        if (preferences.getBoolean("city_selected", false) && !isFromWeatherInfoActivity) {
             Intent intent = new Intent(this, WeatherInfoActivity.class);
             startActivity(intent);
             finish();
