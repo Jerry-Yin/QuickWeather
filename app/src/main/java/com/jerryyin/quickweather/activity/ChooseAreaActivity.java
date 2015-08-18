@@ -2,7 +2,10 @@ package com.jerryyin.quickweather.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -74,6 +77,9 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        judegSelOrNo();
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.choose_layout);
 
@@ -107,6 +113,12 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
         } else if (mCurrentLevel == LEVEL_CITY) {
             mSelCity = mCityList.get(position);
             queryCounties();
+        } else if (mCurrentLevel == LEVEL_COUNTY) {
+            String countyCode = mCountyList.get(position).getCountyCode();
+            Intent intent = new Intent(ChooseAreaActivity.this, WeatherInfoActivity.class);
+            intent.putExtra("county_code", countyCode);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -251,5 +263,19 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
             finish();
         }
     }
+
+    /**
+     * 判断当前是否已经选定过城市，如果选定过就直接跳转道城市天气界面
+     */
+    public void judegSelOrNo() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getBoolean("city_selected", false)) {
+            Intent intent = new Intent(this, WeatherInfoActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+    }
+
 }
 
