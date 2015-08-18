@@ -45,7 +45,7 @@ public class QuickWeatherDB {
      * synchronized 同步化，避免多个线程竞争关系产生的错误
      */
     public synchronized static QuickWeatherDB getInstence(Context context) {
-        if (quickWeatherDB != null) {
+        if (quickWeatherDB == null) {
             quickWeatherDB = new QuickWeatherDB(context);
         }
         return quickWeatherDB;
