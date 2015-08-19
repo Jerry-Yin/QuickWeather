@@ -127,7 +127,11 @@ public class Utility {
     public static void saveWeatherInfo(Context context, String cityName, String weatherCode,
                                        String temp1, String temp2, String weatherDesp,
                                        String publishTime, Bitmap image1, Bitmap iamge2){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年m月d日", Locale.CHINA);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月d日  HH:mm:ss", Locale.CHINA);
+        Date date = new Date(System.currentTimeMillis());
+        String currentDate = dateFormat.format(date);       //获取系统当前时间
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("city_selected", true);   //标志位,以此来辨别当前是否已经选中了一个城市
@@ -137,7 +141,7 @@ public class Utility {
         editor.putString("temp2", temp2);
         editor.putString("weather_desp", weatherDesp);
         editor.putString("publish_time", publishTime);
-        editor.putString("current_date", dateFormat.format(new Date()));
+        editor.putString("current_date", currentDate);
 //        editor.put
         editor.commit();
     }

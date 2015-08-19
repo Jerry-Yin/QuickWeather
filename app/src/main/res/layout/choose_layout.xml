@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dip"
-        android:background="#DDA0DD">
+        android:background="#FFFFF0">
 
         <TextView
             android:id="@+id/tv_title"
@@ -15,13 +15,14 @@
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textColor="#F0E68C"/>
+            android:textSize="25sp"
+            android:textColor="#104E8B"/>
     </RelativeLayout>
 
     <ListView
         android:id="@+id/lv_choose_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#87CEFF">
     </ListView>
 </LinearLayout>

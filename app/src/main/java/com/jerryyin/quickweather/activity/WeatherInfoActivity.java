@@ -8,11 +8,12 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jerryyin.quickweather.R;
+import com.jerryyin.quickweather.service.AutoUpdateService;
 import com.jerryyin.quickweather.util.HttpUtil;
 import com.jerryyin.quickweather.util.OnResponseListener;
 import com.jerryyin.quickweather.util.Utility;
@@ -24,22 +25,20 @@ public class WeatherInfoActivity extends Activity implements View.OnClickListene
 
     /**Constants*/
 
-    /**
-     * Views
-     */
+    /**Views*/
+    private View mWeatherView;
     private TextView mtvCityName;       //城市名字
     private TextView mtvPublish;        //发布时间
     private TextView mtvWeatherDesp;     //天气信息
     private TextView mtvCurrentDate;      //当前时间
     private TextView mtvTemp1, mtvTemp2;//温度
     private RelativeLayout mWeaLaoyout;
-    private Button mbtnChangeCity;      //切换城市按钮
-    private Button mbtnRefreshWer;      //更新天气
+    private ImageView mbtnChangeCity;      //切换城市按钮
+    private ImageView mbtnRefreshWer;      //更新天气
 
     /**
      * Values
      */
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +51,8 @@ public class WeatherInfoActivity extends Activity implements View.OnClickListene
     }
 
     public void initViews() {
+        mWeatherView = (View) findViewById(R.id.weather_view);
+//        mWeatherView.getBackground().setAlpha(15);
         mtvCityName = (TextView) findViewById(R.id.tv_city_name);
         mtvPublish = (TextView) findViewById(R.id.tv_pulish_time);
         mtvWeatherDesp = (TextView) findViewById(R.id.tv_weather_desp);
@@ -59,8 +60,8 @@ public class WeatherInfoActivity extends Activity implements View.OnClickListene
         mtvTemp1 = (TextView) findViewById(R.id.tv_temp1);
         mtvTemp2 = (TextView) findViewById(R.id.tv_temp2);
         mWeaLaoyout = (RelativeLayout) findViewById(R.id.weather_layout);
-        mbtnChangeCity = (Button) findViewById(R.id.btn_home_page);
-        mbtnRefreshWer = (Button) findViewById(R.id.btn_refresh);
+        mbtnChangeCity = (ImageView) findViewById(R.id.btn_home_page);
+        mbtnRefreshWer = (ImageView) findViewById(R.id.btn_refresh);
         mbtnRefreshWer.setOnClickListener(this);
         mbtnChangeCity.setOnClickListener(this);
     }
@@ -133,33 +134,39 @@ public class WeatherInfoActivity extends Activity implements View.OnClickListene
             public void onError(Exception e) {
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run() { mtvPublish.setText("同步失败");
-                    } });
+                    public void run() {
+                        mtvPublish.setText("同步失败");
+                        mbtnRefreshWer.setImageResource(R.drawable.img_refresh_normal);
+                    }
+                });
 
             }
         });
     }
 
     /**
-     *  显示信息，在主线程中完成 ，需要 拿取 已经解析完成并存储到SharedPreference中的数据
+     * 显示信息，在主线程中完成 ，需要 拿取 已经解析完成并存储到SharedPreference中的数据
      */
-    public void showWeather(){
+    public void showWeather() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mtvPublish.setText("今天" + preferences.getString("publish_time","") + "发布：");
+        mtvPublish.setText("今天" + preferences.getString("publish_time", "") + "发布：");
         mtvCityName.setText(preferences.getString("city_name", ""));
         mtvWeatherDesp.setText(preferences.getString("weather_desp", ""));
         mtvTemp1.setText(preferences.getString("temp1", ""));
         mtvTemp2.setText(preferences.getString("temp2", ""));
         mtvCurrentDate.setText(preferences.getString("current_date", ""));
 
-
         mWeaLaoyout.setVisibility(View.VISIBLE);
+        mbtnRefreshWer.setImageResource(R.drawable.img_refresh_normal);
+        Intent intent = new Intent(this, AutoUpdateService.class);  //只要一旦选中了某个城市并成功更新天气之后, 便会启动服务，
+        startService(intent);                                       // AutoUpdateService 就会一直在后台 运行,并保证每 8 小时更新一次天气。
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_home_page:
+                mbtnChangeCity.setImageResource(R.drawable.img_home_pressed);
                 Intent intent = new Intent(this, ChooseAreaActivity.class);
                 intent.putExtra("from_weather_activity", true);
                 startActivity(intent);
@@ -168,9 +175,10 @@ public class WeatherInfoActivity extends Activity implements View.OnClickListene
 
             case R.id.btn_refresh:
                 mtvPublish.setText("正在刷新...");
+                mbtnRefreshWer.setImageResource(R.drawable.img_refresh_pressed);
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-                String weatherCode = preferences.getString("weather_code",  "");
-                if (!TextUtils.isEmpty(weatherCode)){
+                String weatherCode = preferences.getString("weather_code", "");
+                if (!TextUtils.isEmpty(weatherCode)) {
                     queryWeatherInfo(weatherCode);
                 }
                 break;
