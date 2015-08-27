@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E0EEEE"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="#87CEEB">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:text="管理城市"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="已添加城市："
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/list_saved_city"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="0.7"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+        </ListView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dip"
+            android:layout_marginBottom="20dip">
+
+            <ImageView
+                android:id="@+id/btn_add_city"
+                android:layout_width="65dip"
+                android:layout_height="65dip"
+                android:background="@drawable/btn_add_normal" />
+            <TextView
+                android:text="添加城市"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dip"
+                android:layout_below="@+id/btn_add_city"/>
+
+            <ImageView
+                android:id="@+id/btn_seetings"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/btn_settings_normal" />
+
+            <TextView
+                android:text="设置"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingRight="18dip"
+                android:paddingTop="4dip"
+                android:layout_below="@+id/btn_seetings"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

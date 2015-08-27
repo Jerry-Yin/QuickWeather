@@ -30,6 +30,10 @@ public class QuickWeatherOpenHelper extends SQLiteOpenHelper {
                                                     "county_code text, " +
                                                     "city_id integer)";
 
+    /**
+     *  用于存储 添加城市 的 表构建语句
+     */
+    public static final String CREATE_LOCALCITIES = "create table LocalCities(id integer primary key autoincrement, county_name text, county_code text)";
 
 
     public QuickWeatherOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -41,6 +45,7 @@ public class QuickWeatherOpenHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PROVINCE);
         db.execSQL(CREATE_CITY);
         db.execSQL(CREATE_COUNTY);
+        db.execSQL(CREATE_LOCALCITIES);
     }
 
     @Override

@@ -7,22 +7,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dip"
-        android:background="#FFFFF0">
+        android:background="#87CEEB">
 
         <TextView
             android:id="@+id/tv_title"
-            android:text="China"
+            android:text="中国"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25sp"
-            android:textColor="#104E8B"/>
+            android:textColor="#ffffff"/>
     </RelativeLayout>
 
     <ListView
         android:id="@+id/lv_choose_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#87CEFF">
+        android:layout_height="match_parent">
     </ListView>
 </LinearLayout>

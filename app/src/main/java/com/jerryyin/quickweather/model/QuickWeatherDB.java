@@ -55,8 +55,8 @@ public class QuickWeatherDB {
     /**
      * 将Province实例存储到数据库。
      */
-    public void saveProvince(Province province){
-        if (province != null){
+    public void saveProvince(Province province) {
+        if (province != null) {
             ContentValues cv = new ContentValues();
             cv.put("province_name", province.getProvinceName());
             cv.put("province_code", province.getProvinceCode());
@@ -67,17 +67,17 @@ public class QuickWeatherDB {
     /**
      * 从数据库读取全国所有的省份信息。
      */
-    public List<Province> loadProvince(){
+    public List<Province> loadProvince() {
         List<Province> list = new ArrayList<Province>();
         Cursor cursor = db.query("Province", null, null, null, null, null, null);
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 Province province = new Province();
                 province.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 province.setProvinceName(cursor.getString(cursor.getColumnIndex("province_name")));
                 province.setProvinceCode(cursor.getString(cursor.getColumnIndex("province_code")));
                 list.add(province);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         return list;
     }
@@ -85,8 +85,8 @@ public class QuickWeatherDB {
     /**
      * 将City实例存储到数据库。
      */
-    public void saveCity(City city){
-        if (city != null){
+    public void saveCity(City city) {
+        if (city != null) {
             ContentValues cv = new ContentValues();
             cv.put("city_name", city.getCityName());
             cv.put("city_code", city.getCityCode());
@@ -98,10 +98,10 @@ public class QuickWeatherDB {
     /**
      * 从数据库读取某个省份下所有的城市信息。
      */
-    public List<City> loadCities(int provinceId){
+    public List<City> loadCities(int provinceId) {
         List<City> list = new ArrayList<City>();
         Cursor cursor = db.query("City", null, "province_id = ?", new String[]{String.valueOf(provinceId)}, null, null, null);
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 City city = new City();
                 city.setId(cursor.getInt(cursor.getColumnIndex("id")));
@@ -109,7 +109,7 @@ public class QuickWeatherDB {
                 city.setCityCode(cursor.getString(cursor.getColumnIndex("city_code")));
                 city.setProvinceId(provinceId);
                 list.add(city);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         return list;
     }
@@ -117,8 +117,8 @@ public class QuickWeatherDB {
     /**
      * 将County实例存储到数据库。
      */
-    public void saveCounty(County county){
-        if (county != null){
+    public void saveCounty(County county) {
+        if (county != null) {
             ContentValues cv = new ContentValues();
             cv.put("county_name", county.getCountyName());
             cv.put("county_code", county.getCountyCode());
@@ -130,10 +130,10 @@ public class QuickWeatherDB {
     /**
      * 从数据库读取某个城市下所有的县信息。
      */
-    public List<County> loadCounties(int cityId){
+    public List<County> loadCounties(int cityId) {
         List<County> list = new ArrayList<County>();
         Cursor cursor = db.query("County", null, "city_id = ?", new String[]{String.valueOf(cityId)}, null, null, null);
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 County county = new County();
                 county.setId(cursor.getInt(cursor.getColumnIndex("id")));
@@ -141,10 +141,52 @@ public class QuickWeatherDB {
                 county.setCountyCode(cursor.getString(cursor.getColumnIndex("county_code")));
                 county.setCityId(cityId);
                 list.add(county);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         return list;
     }
 
 
+    /**
+     * 将添加的 我的城市(城市名字＋代号) 存储到数据库， 会一次增加id值
+     */
+    public void saveLocalCities(County city) {
+        if (city != null) {
+            ContentValues cv = new ContentValues();
+            cv.put("county_name", city.getCountyName());
+            cv.put("county_code", city.getCountyCode());
+            db.insert("LocalCities", null, cv);
+        }
+    }
+
+    /**
+     * 删除 已添加城市
+     * 通过 城市名字 查询到并且删除
+     */
+    public void deleteLocalCities(String countyName) {
+        db.delete("LocalCities", "county_name = ?", new String[]{countyName});
+    }
+
+    /**
+     * 遍历查询当前的 所有 已添加城市
+     */
+    public List<County> queryLocalCities() {
+        List<County> localList = new ArrayList<County>();
+
+        Cursor cursor = db.query("LocalCities", null, null, null, null, null, null);
+        //遍历数据库 “LocalCities”表中 所有数据
+        if (cursor.moveToFirst()) {
+            do {
+                County county = new County();
+                String countyCode = cursor.getString(cursor.getColumnIndex("county_code"));
+                String countyName = cursor.getString(cursor.getColumnIndex("county_name"));
+                county.setCountyCode(countyCode);
+                county.setCountyName(countyName);
+                localList.add(county);
+            }while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return localList;
+    }
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="#87CEEB">
+
+    <TextView
+        android:id="@+id/tv_temp1_temp2_future"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="18/03"
+        android:textColor="#ffffff"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/tv_o_future"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/tv_temp1_temp2_future"
+        android:text="o"
+        android:textColor="#ffffff"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_weather_desp_future"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="晴转多云"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:layout_toRightOf="@+id/tv_o_future"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"/>
+
+    <ImageView
+        android:id="@+id/img_weather_future"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/tv_weather_desp_future"
+        android:src="@drawable/img_weather_future"/>
+
+    <TextView
+        android:id="@+id/tv_date_future"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="08/22"
+        android:textSize="15sp"
+        android:textColor="#ffffff"
+        android:layout_toRightOf="@id/img_weather_future"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"/>
+
+    <TextView
+        android:id="@+id/tv_weekend_future"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="星期六"
+        android:textSize="15sp"
+        android:textColor="#ffffff"
+        android:gravity="right"
+        android:layout_toRightOf="@+id/tv_date_future"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="#87CEEB">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:text="简易天气"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
+
+        <ImageView
+            android:id="@+id/btn_refresh"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/img_refresh_normal" />
+
+        <ImageView
+            android:id="@+id/btn_more"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/btn_more_normal" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_pulish_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:background="#C6E2FF"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="今天18:00发布:"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/weather_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E0EEEE"
+        android:orientation="vertical">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/weather_view_pager"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.6">
+        </android.support.v4.view.ViewPager>
+
+        <ListView
+            android:id="@+id/listview_future"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="8dp"
+            android:background="#87CEEB">
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>

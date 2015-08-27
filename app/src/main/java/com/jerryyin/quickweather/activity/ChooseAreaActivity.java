@@ -52,7 +52,7 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
      * Values
      */
     private ArrayAdapter<String> mListsAdapter;
-    private QuickWeatherDB mQuickWeatherDB;
+    public static QuickWeatherDB mQuickWeatherDB;
     private List<String> mDataList = new ArrayList<String>();
 
     /**
@@ -74,9 +74,13 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
     private int mCurrentLevel;
 
     /**
-     *  是否从WeatherInfoActivity 跳转过来（按钮）
+     * 是否从WeatherInfoActivity 跳转过来（按钮）
      */
     private boolean isFromWeatherInfoActivity;
+    private boolean isAddCity;
+
+//    /**已经存储的本地城市*/
+//    private static List<County> savedCitiesList = new ArrayList<County>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +108,9 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
     }
 
     public void initData() {
-        mQuickWeatherDB = QuickWeatherDB.getInstence(this);
+        if (mQuickWeatherDB == null){
+            mQuickWeatherDB = QuickWeatherDB.getInstence(this);
+        }
         queryProvinces();  // 默认 初次打开加载省级数据
     }
 
@@ -118,8 +124,14 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
             mSelCity = mCityList.get(position);
             queryCounties();
         } else if (mCurrentLevel == LEVEL_COUNTY) {
+            mQuickWeatherDB.saveLocalCities(mCountyList.get(position)); //存储到本地数据库（我的城市）
+
             String countyCode = mCountyList.get(position).getCountyCode();
-            Intent intent = new Intent(ChooseAreaActivity.this, WeatherInfoActivity.class);
+//            Intent intent = new Intent(ChooseAreaActivity.this, WeatherInfoActivity.class);
+            if (WeatherInfoActivity2.instance != null) {
+                WeatherInfoActivity2.instance.finish();
+            }
+            Intent intent = new Intent(ChooseAreaActivity.this, WeatherInfoActivity2.class);
             intent.putExtra("county_code", countyCode);
             startActivity(intent);
             finish();
@@ -264,7 +276,7 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
         } else if (mCurrentLevel == LEVEL_CITY) {
             queryProvinces();
         } else {
-            if (isFromWeatherInfoActivity){
+            if (isFromWeatherInfoActivity) {
                 Intent intent = new Intent(this, WeatherInfoActivity.class);
                 startActivity(intent);
             }
@@ -272,20 +284,32 @@ public class ChooseAreaActivity extends Activity implements AdapterView.OnItemCl
         }
     }
 
+
     /**
-     * 1.判断当前是否已经选定过城市，如果选定过就直接跳转道城市天气界面
-     * 2.已经选择了城市且不是从WeatherActivity跳转过来,才会直接跳转到 WeatherActivity
+     * 1.判断当前是否已经选定过城市，如果
+     * 已经选择了城市(数据库的添加城市表单数据不为空) 且 不是从MoreFunctionActivity(添加城市)跳转过来,才会直接跳转到 WeatherActivity
+     * 2.删除所有城市后退出在进入时，需要重新添加城市
      */
     public void judegSelOrNo() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        isFromWeatherInfoActivity = getIntent().getBooleanExtra("from_weather_activity", false);
-        if (preferences.getBoolean("city_selected", false) && !isFromWeatherInfoActivity) {
-            Intent intent = new Intent(this, WeatherInfoActivity.class);
+        isAddCity = getIntent().getBooleanExtra("is_add_city", false);
+//        if (preferences.getBoolean("city_selected", false) && !isAddCity) {
+        if (mQuickWeatherDB == null){
+            mQuickWeatherDB = QuickWeatherDB.getInstence(this);
+        }
+        if ( mQuickWeatherDB.queryLocalCities().size() != 0 && !isAddCity) {
+            Intent intent = new Intent(this, WeatherInfoActivity2.class);
             startActivity(intent);
             finish();
             return;
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.finish();
+    }
 }
 

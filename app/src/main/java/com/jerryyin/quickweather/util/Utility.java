@@ -1,5 +1,6 @@
 package com.jerryyin.quickweather.util;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -128,22 +129,39 @@ public class Utility {
                                        String temp1, String temp2, String weatherDesp,
                                        String publishTime, Bitmap image1, Bitmap iamge2){
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月d日  HH:mm:ss", Locale.CHINA);
-        Date date = new Date(System.currentTimeMillis());
-        String currentDate = dateFormat.format(date);       //获取系统当前时间
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月d日  HH:mm:ss", Locale.CHINA);
+//        Date date = new Date(System.currentTimeMillis());
+//        String currentDate = dateFormat.format(date);       //获取系统当前时间
+
+        GetCurrentDate date = new GetCurrentDate();
+//        String currentDate = date.mYear + "年" + date.mMonth + "月" + date.mDay + "日";
+        String currentDate = date.mMonth + "／" + date.mDay;
+        String currentWeekend = date.mWay;
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("city_selected", true);   //标志位,以此来辨别当前是否已经选中了一个城市
         editor.putString("city_name", cityName);
         editor.putString("weather_code", weatherCode);
-        editor.putString("temp1", temp1);
-        editor.putString("temp2", temp2);
+        editor.putString("temp1", temp1.substring(0, temp1.length()-1));    // 此处温度是带 ℃ 单位的；占一个字符长度
+        editor.putString("temp2", temp2.substring(0, temp2.length()-1));    //temp1.substring(0, temp1.length()-1)，去掉最后一个字符再显示
         editor.putString("weather_desp", weatherDesp);
         editor.putString("publish_time", publishTime);
         editor.putString("current_date", currentDate);
+        editor.putString("current_weekend", currentWeekend);
 //        editor.put
         editor.commit();
     }
 
+//    /**
+//     *  添加选中的城市到本地（我的城市）
+//     */
+//    public static void saveCityToLocal(Context context, String countyName){
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+//        SharedPreferences.Editor editor = preferences.edit();
+////        ContentValues cv = new ContentValues();
+////        cv.put();
+//        editor.putString("saved_city", countyName);
+//        editor.commit();
+//    }
 }

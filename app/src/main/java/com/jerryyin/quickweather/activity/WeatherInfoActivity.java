@@ -52,7 +52,7 @@ public class WeatherInfoActivity extends Activity implements View.OnClickListene
 
     public void initViews() {
         mWeatherView = (View) findViewById(R.id.weather_view);
-//        mWeatherView.getBackground().setAlpha(15);
+//        mWeatherView.getBackground().setAlpha(15);            //设置图片透明度
         mtvCityName = (TextView) findViewById(R.id.tv_city_name);
         mtvPublish = (TextView) findViewById(R.id.tv_pulish_time);
         mtvWeatherDesp = (TextView) findViewById(R.id.tv_weather_desp);
